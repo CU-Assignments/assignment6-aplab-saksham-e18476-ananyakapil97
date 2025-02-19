@@ -1,0 +1,78 @@
+Program 1
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return helper(nums, 0, nums.size() - 1);
+    }
+    
+    TreeNode* helper(vector<int>& nums, int left, int right) {
+        if (left > right) return nullptr; // Base case
+        
+        int mid = left + (right - left) / 2; // Middle element as root
+        TreeNode* root = new TreeNode(nums[mid]);
+        
+        root->left = helper(nums, left, mid - 1);   // Construct left subtree
+        root->right = helper(nums, mid + 1, right); // Construct right subtree
+        
+        return root;
+    }
+};
+
+// Utility function to print tree in-order (for testing)
+void inorderPrint(TreeNode* root) {
+    if (!root) return;
+    inorderPrint(root->left);
+    cout << root->val << " ";
+    inorderPrint(root->right);
+}
+
+int main() {
+    Solution sol;
+    vector<int> nums = {-10, -3, 0, 5, 9};
+    
+    TreeNode* root = sol.sortedArrayToBST(nums);
+    inorderPrint(root); // Output should be sorted
+    cout << endl;
+    
+    return 0;
+}
+
+Program 2
+
+#include <iostream>
+
+using namespace std;
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if (root == nullptr) return 0; // Base case
+        
+        int leftDepth = maxDepth(root->left);
+        int rightDepth = maxDepth(root->right);
+        
+        return 1 + max(leftDepth, rightDepth); // Take max of left & right
+    }
+};
